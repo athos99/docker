@@ -1,0 +1,230 @@
+version: '3.8'
+services:
+  php74:
+    command:
+      - /bin/bash
+      - -c
+      - | 
+          mkdir -p /var/www/log/php
+          mkdir -p /var/www/log/apache
+          apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
+    container_name: php74
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.php74
+    volumes:
+      - ../.:/var/www
+      - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
+    ports:
+      - 1074:80
+    networks:
+      - dev
+
+
+  php74-cli:
+    image: php:7.4-cli
+    container_name: php74-cli
+    volumes:
+      - ../.:/var/www
+    environment:
+      WORKDIR: /var/www
+    networks:
+      - dev
+
+
+
+
+  php81:
+    command:
+      - /bin/bash
+      - -c
+      - | 
+          mkdir -p /var/www/log/php
+          mkdir -p /var/www/log/apache
+          apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
+    container_name: php81
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.php81
+    volumes:
+      - ../.:/var/www
+      - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
+    ports:
+      - 1081:80
+    networks:
+      - dev
+
+  php82:
+    command:
+      - /bin/bash
+      - -c
+      - | 
+          mkdir -p /var/www/log/php
+          mkdir -p /var/www/log/apache
+          apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
+    container_name: php82
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.php82
+    volumes:
+      - ../.:/var/www
+      - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
+    ports:
+      - 80:80
+      - 1082:80
+      - 8082:8000
+      - 8000:8000
+      - 3000:3000
+      - 2001:2001
+      - 2002:2002
+      - 5173:5173
+      - 7777:7777
+    networks:
+      - dev
+
+  saml2:
+    command:
+      - /bin/bash
+      - -c
+      - | 
+          mkdir -p /var/www/log/php
+          mkdir -p /var/www/log/apache
+          apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
+    container_name: saml2
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.saml2
+    ports:
+      - "1050:80"
+    volumes:
+      - ./config/saml2/config.php:/var/www/simplesamlphp/config/config.php
+      - ./config/saml2/acl.php:/var/www/simplesamlphp/config/acl.php
+      - ./config/saml2/authsources.php:/var/www/simplesamlphp/config/authsources.php
+      - ./config/saml2/saml20-sp-remote.php:/var/www/simplesamlphp/metadata/saml20-sp-remote.php
+    networks:
+      - dev
+
+
+  adminer:
+    container_name: adminer
+    build:
+      context: .
+      dockerfile: Dockerfile.adminer
+    restart: always
+    ports:
+      - 1078:8080
+    networks:
+      - dev
+    depends_on:
+      - mysql
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 13306:3306
+    networks:
+      - dev
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+    networks:
+      - dev
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 15432:5432
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - 1079:80
+    environment:
+      PMA_HOST: mysql
+    networks:
+      - dev
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - mariadb:/var/lib/mysql
+    ports:
+      - 23306:3306
+    networks:
+      - dev
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    restart: always
+    ports:
+      - 1025:25
+      - 8025:8025
+    networks:
+      - dev
+
+  opensearch: # This is also the hostname of the container within the Docker network (i.e. https://opensearch-node1/)
+    image: opensearchproject/opensearch:latest # Specifying the latest available image - modify if you want a specific version
+    container_name: opensearch
+    environment:
+      - cluster.name=opensearch-cluster # Name the cluster
+      - node.name=os01 # Name the node that will run in this container
+      - discovery.seed_hosts=os01 # Nodes to look for when discovering the cluster
+      - cluster.initial_cluster_manager_nodes=os01 # Nodes eligible to serve as cluster manager
+      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+      - plugins.security.disabled=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+    ulimits:
+      memlock:
+        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data # Creates volume called opensearch-data1 and mounts it to the container
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Performance Analyzer
+    networks:
+      - dev
+
+
+networks:
+    dev:
+volumes:
+    mysql:
+    postgres:
+    mariadb:
+    opensearch-data1:
