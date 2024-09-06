@@ -82,3 +82,4 @@ Chercher "servers", il propose PHP/Debug/Server, il peut avoir plusieurs configs
 docker (port 8082)
 
 Pour le directory htdocs mettre /var/www/htdocs/, cela permet de debugger les répertoires src et vendor !
+
