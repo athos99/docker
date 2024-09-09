@@ -19,7 +19,8 @@ services:
       - 1074:80
     networks:
       - dev
-
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   php74-cli:
     image: php:7.4-cli
@@ -54,6 +55,8 @@ services:
       - 1081:80
     networks:
       - dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   php82:
     command:
@@ -83,6 +86,8 @@ services:
       - 7777:7777
     networks:
       - dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   saml2:
     command:
