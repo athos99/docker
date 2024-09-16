@@ -149,3 +149,30 @@ Mettre des break point dans votre code
 
 Charger la page depuis le browser
 
+
+
+###
+Avoir le PHP depuis une image docker. On peut ajouter le PHP sur linux en ajoutant la commande /usr/local/bin/php.
+( on peut aussi la nommer php82, php74, etc....)
+
+Depuis un terminal linux ( ubuntu)
+
+    sudo touch /usr/local/bin/php
+    sudo chmod +x /usr/local/bin/php
+
+Edit the file (with sudo) 
+
+    sudo vi /usr/local/bin/php
+
+and paste this code:
+
+    command="docker exec -i php82 php "$@""
+    $command
+
+If you don't use php82, change php82 to your container name ie php74.
+
+In VsCode settings.json, change
+
+    "php.validate.executablePath": "/usr/local/bin/php",
+    "php.executablePath": "/user/local/bin/php",
+
