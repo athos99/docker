@@ -1,4 +1,4 @@
-FROM php:8.1-apache as php81
+FROM php:8.3-apache as php83
 ENV APACHE_DOCUMENT_ROOT /var/www
 ENV APACHE_LOG_DIR /var/www/log/apache
 
@@ -35,6 +35,9 @@ RUN apt-get update && apt-get install -y \
 
 
 
+
+
+
 #apache
 RUN set -eux; \
     a2enmod rewrite; \
@@ -66,6 +69,7 @@ RUN set -eux; \
     exif
 
 
+
 #install node js
 RUN apt-get install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings
@@ -74,6 +78,8 @@ ENV NODE_MAJOR=22
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update
 RUN apt-get install nodejs -y
+
+
 
 RUN npm config set cafile=/etc/ssl/certs/ca-certificates.crt
 
@@ -91,7 +97,6 @@ RUN npm install --global yarn \
 #install phpstan
 ENV PATH="$PATH:/root/.config/composer/vendor/bin"
 RUN composer global require phpstan/phpstan
-
 
 
 # Install xdebug.
@@ -126,4 +131,3 @@ RUN pip install rpaframework-dialogs
 
 RUN npx -y playwright install-deps
 RUN rfbrowser init
-

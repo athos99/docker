@@ -7,7 +7,8 @@ Il est prévu d'être installé dans votre répertoire /www
 |------------|---------------------|------------------------------------------------------------------------------------|
 | php74      | 1074                | PHP 7.4, xdebug, composer, symfony cli, node js, npm,yarn, phpStan, robotFramework |
 | php81      | 1081                | PHP 8.1, xdebug, composer, symfony cli, node js, npm,yarn, phpStan, robotFramework |
-| php82      | 1082 & 80           | PHP 8.2, xdebug, composer, symfony cli, node js, npm,yarn, phpStan, robotFramework |
+| php82      | 1082                | PHP 8.2, xdebug, composer, symfony cli, node js, npm,yarn, phpStan, robotFramework |
+| php83      | 1083 & 80           | PHP 8.3, xdebug, composer, symfony cli, node js, npm,yarn, phpStan, robotFramework |
 | phpmyadmin | 1079                | web appli PhpMyAdmin pour mysql                                                    |
 | adminer    | 1078                | web appli Adminer pour mysql, pgsql, sqlLite                                       |
 | mysql      | 13306               | Serveur DB mySql                                                                   |
