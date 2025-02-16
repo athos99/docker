@@ -203,12 +203,16 @@ services:
     networks:
       - dev
 
+
   mariadb:
-    image: mariadb:10.5
+    image: mariadb
     container_name: mariadb
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_USER: ${MYSQL_USER}
+      MARIADB_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - mariadb:/var/lib/mysql
     ports:
