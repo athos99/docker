@@ -126,7 +126,7 @@ RUN pipx ensurepath
 RUN pip install robotframework
 RUN pip install robotframework-browser
 RUN pip install robotframework-debugger 
-RUN pip install rpaframework-dialogs 
+#RUN pip install rpaframework-dialogs 
 
 
 RUN npx -y playwright install-deps
