@@ -99,28 +99,43 @@ services:
       - ../.:/var/www
       - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
     ports:
-      - 80:80
       - 1083:80
-      - 8000:8000
-      - 3000:3000
-      - 8082:8000
-      - 8000:8000
-      - 3000:3000
-      - 2001:2001
-      - 2002:2002
-      - 5173:5173
-      - 7777:7777
-
     networks:
       - dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
 
-
-
-
-
+  php84:
+    command:
+      - /bin/bash
+      - -c
+      - | 
+          mkdir -p /var/www/log/php
+          mkdir -p /var/www/log/apache
+          apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
+    container_name: php84
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile.php84
+    volumes:
+      - ../.:/var/www
+      - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
+    ports:
+      - 80:80
+      - 1084:80
+      - 8000:8000
+      - 3000:3000
+      - 8082:8000
+      - 2001:2001
+      - 2002:2002
+      - 5173:5173
+      - 7777:7777
+    networks:
+      - dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   saml2:
     command:
@@ -190,18 +205,18 @@ services:
     ports:
       - 15432:5432
 
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    depends_on:
-      - mysql
-    ports:
-      - 1079:80
-    environment:
-      PMA_HOST: mysql
-    networks:
-      - dev
+  # phpmyadmin:
+  #   image: phpmyadmin
+  #   container_name: phpmyadmin
+  #   restart: always
+  #   depends_on:
+  #     - mysql
+  #   ports:
+  #     - 1079:80
+  #   environment:
+  #     PMA_HOST: mysql
+  #   networks:
+  #     - dev
 
 
   mariadb:
@@ -262,6 +277,7 @@ services:
 
 networks:
     dev:
+
 volumes:
     mysql:
     postgres:
