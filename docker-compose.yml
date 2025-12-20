@@ -3,7 +3,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - | 
+      - |
           mkdir -p /var/www/log/php
           mkdir -p /var/www/log/apache
           apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
@@ -39,7 +39,7 @@ services:
   #   command:
   #     - /bin/bash
   #     - -c
-  #     - | 
+  #     - |
   #         mkdir -p /var/www/log/php
   #         mkdir -p /var/www/log/apache
   #         apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
@@ -62,7 +62,7 @@ services:
   #   command:
   #     - /bin/bash
   #     - -c
-  #     - | 
+  #     - |
   #         mkdir -p /var/www/log/php
   #         mkdir -p /var/www/log/apache
   #         apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
@@ -86,7 +86,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - | 
+      - |
           mkdir -p /var/www/log/php
           mkdir -p /var/www/log/apache
           apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
@@ -110,7 +110,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - | 
+      - |
           mkdir -p /var/www/log/php
           mkdir -p /var/www/log/apache
           apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
@@ -141,7 +141,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - | 
+      - |
           mkdir -p /var/www/log/php
           mkdir -p /var/www/log/apache
           apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
@@ -193,7 +193,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:17.5
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -249,6 +249,7 @@ services:
     image: opensearchproject/opensearch:latest # Specifying the latest available image - modify if you want a specific version
     container_name: opensearch
     environment:
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD} # Set the initial admin password from the .env file
       - cluster.name=opensearch-cluster # Name the cluster
       - node.name=os01 # Name the node that will run in this container
       - discovery.seed_hosts=os01 # Nodes to look for when discovering the cluster
