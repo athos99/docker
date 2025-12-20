@@ -117,12 +117,12 @@ RUN apt-get install -y libxslt-dev &&  docker-php-ext-install xsl
 
 RUN docker-php-ext-install xmlrpc
 
-RUN apt-get install -y python3 python3-pip python3-tk 
-RUN pip install robotframework
-RUN pip install robotframework-browser
-RUN pip install robotframework-debugger
-RUN pip install rpaframework-dialogs
-RUN npx -y playwright install-deps
+# RUN apt-get install -y python3 python3-pip python3-tk
+# RUN pip install robotframework
+# RUN pip install robotframework-browser
+# RUN pip install robotframework-debugger
+# RUN pip install rpaframework-dialogs
+# RUN npx -y playwright install-deps
 
 
-RUN rfbrowser init
+# RUN rfbrowser init
