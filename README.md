@@ -14,7 +14,7 @@ Il est prévu d'être installé dans votre répertoire /www
 | mysql      | 13306               | Serveur DB mySql                                                                   |
 | postgres   | 15432               | Serveur DB postgres                                                                |
 | saml2      | 1050                | Saml 2                                                                             |
-| mailhog    | 1025 & 8025         | mailhog                                                                            |       
+| mailhog    | 1025 & 8025         | mailhog                                                                            |
 | opensearch | 9200 & 9600         | Open search                                                                        |
 
 # Installation
@@ -29,7 +29,7 @@ Il est prévu d'être installé dans votre répertoire /www
 
 Depuis la console windows power shell
 
-    docker-compose build --pull  
+    docker-compose build --pull
     docker-compose up --build -d
 
 Il m'y a rien d'immuables et des changements sont opérés sur les images et distributions linux, il se peut que
@@ -94,13 +94,13 @@ Refaire toutes les images avec la dernière version du fichier docker-compose.ym
 
 1) Depuis la console windows normal avec le réesau sur le wifi et docker sans proxy. (Attention avec les dernière version de docker il faut aussi désactivé le proxy. Aller dans Setup Ressources Proxy, choisissez manuel configuration et laissez vide web server et secure web server.)
 
-        cd \\wsl.localhost\Ubuntu\home\user\www\docker_www
-        docker-compose build --pull  
+        cd \\wsl.localhost\Ubuntu\home\user\www\docker
+        docker-compose build --pull
         docker-compose up --build -d
 
 
 2) Depuis la console windows lancée avec les droits admin
-   
+
         New-NetFirewallRule -DisplayName "WSL" -Direction Outbound  -InterfaceAlias "vEthernet (WSL (Hyper-V firewall))"  -Action Allow
 
 Ca doit ouvrir des ports que le firewall de windows bloque
@@ -129,7 +129,7 @@ Signet remote[WSL unbuntu]
                     },
                 "hostname": "localhost"
                 }
-            ]   
+            ]
         }
 
 
@@ -161,7 +161,7 @@ Depuis un terminal linux ( ubuntu)
     sudo touch /usr/local/bin/php
     sudo chmod +x /usr/local/bin/php
 
-Edit the file (with sudo) 
+Edit the file (with sudo)
 
     sudo vi /usr/local/bin/php
 

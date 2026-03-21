@@ -1,4 +1,4 @@
-FROM php:7.4-apache as php74
+FROM php:7.4-apache AS php74
 ENV APACHE_DOCUMENT_ROOT /var/www
 ENV APACHE_LOG_DIR /var/www/log/apache
 

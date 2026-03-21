@@ -1,4 +1,4 @@
-FROM php:8.2-apache as php82
+FROM php:8.2-apache AS php82
 ENV APACHE_DOCUMENT_ROOT /var/www
 ENV APACHE_LOG_DIR /var/www/log/apache
 
