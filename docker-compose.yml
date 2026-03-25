@@ -67,7 +67,7 @@ services:
           mkdir -p /var/www/log/apache
           apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
     container_name: php82
-    restart: unless-stopped
+    restart: no
     build:
       context: .
       dockerfile: Dockerfile.php82
