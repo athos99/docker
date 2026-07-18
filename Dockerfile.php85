@@ -72,9 +72,12 @@ RUN composer global require phpstan/phpstan
 
 
 
-
+COPY --link \
+    --from=ghcr.io/symfony-cli/symfony-cli:latest \
+    /usr/local/bin/symfony /usr/local/bin/symfony
 
 # Setup, Download & install Symfony CLI.
-RUN set -eux; \
-  curl -sS https://get.symfony.com/cli/installer | bash; \
-  mv /root/.symfony5/bin/symfony /usr/bin
+#RUN set -eux; \
+#  curl -sS https://get.symfony.com/cli/installer | bash;
+#  mv /root/.symfony5/bin/symfony /usr/bin
+#  mv  /root/.symfony5  /root/.config/symfony-cli
