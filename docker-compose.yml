@@ -147,6 +147,7 @@ services:
       - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
     ports:
       - 1085:80
+      - 8080:8080
       - 9044:9044
       - 80:80
       - 8000:8000
