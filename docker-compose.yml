@@ -124,6 +124,31 @@ services:
       - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
     ports:
       - 1084:80
+    networks:
+      - dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  php85:
+    command:
+      - /bin/bash
+      - -c
+      - |
+          mkdir -p /var/www/log/php
+          mkdir -p /var/www/log/apache
+          apache2-foreground -c "DocumentRoot /var/www" -c "SetEnv DOCKER_ENVIRONMENT 1"
+    container_name: php85
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile.php85
+    volumes:
+      - ../.:/var/www
+      - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
+    ports:
+      - 1085:80
+      - 9044:9044
+      - 80:80
       - 8000:8000
       - 3000:3000
       - 8082:8000
@@ -135,6 +160,7 @@ services:
       - dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
 
   saml2:
     command:
