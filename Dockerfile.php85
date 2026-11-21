@@ -46,7 +46,11 @@ RUN install-php-extensions intl ldap gd gd xdebug mysqli pdo_mysql pdo_pgsql \
     zip soap opcache exif @composer
 
 #install node js
-RUN apt-get install -y ca-certificates curl gnupg
+# install-php-extensions vide /var/lib/apt/lists : il faut un apt-get update
+# avant toute nouvelle installation, sinon "Package ... has no installation candidate".
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl gnupg \
+    && rm -rf /var/lib/apt/lists/*
 
 # Télécharger et installer nvm :
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
