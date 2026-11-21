@@ -13,7 +13,6 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 
 # Install Linux libraries.
@@ -42,22 +41,26 @@ RUN set -eux; \
     a2enmod expires; \
     a2enmod autoindex
 
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN install-php-extensions intl ldap gd gd xdebug mysqli pdo_mysql pdo_pgsql \
     zip soap opcache exif @composer
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y gnupg curl apt-transport-https lsb-release unzip \
-    && curl -fsSL https://deb.nodesource.com/setup_22.x | http_proxy='' bash - \
-    && http_proxy='' apt-get install -y nodejs \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+#install node js
+RUN apt-get install -y ca-certificates curl gnupg
 
+# Télécharger et installer nvm :
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
 
+# Chaque RUN ouvre un nouveau shell : nvm (chargé depuis ~/.nvm/nvm.sh) doit être
+# sourcé puis utilisé dans la MÊME commande, sinon "nvm: not found" (exit 127).
+ENV NVM_DIR=/root/.nvm
+RUN bash -c 'source "$NVM_DIR/nvm.sh" && nvm install 26'
+# Rendre node/npm/yarn disponibles dans tous les RUN/images suivants :
+RUN ln -sfn "$(ls -d "$NVM_DIR"/versions/node/v26.*/bin)" /usr/local/node-bin
+ENV PATH=/usr/local/node-bin:$PATH
 
 
 RUN npm config set cafile=/etc/ssl/certs/ca-certificates.crt
-
 
 ## yarn
 RUN npm install --global yarn \
@@ -76,8 +79,3 @@ COPY --link \
     --from=ghcr.io/symfony-cli/symfony-cli:latest \
     /usr/local/bin/symfony /usr/local/bin/symfony
 
-# Setup, Download & install Symfony CLI.
-#RUN set -eux; \
-#  curl -sS https://get.symfony.com/cli/installer | bash;
-#  mv /root/.symfony5/bin/symfony /usr/bin
-#  mv  /root/.symfony5  /root/.config/symfony-cli
