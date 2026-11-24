@@ -87,17 +87,10 @@ services:
       - ../.:/var/www
       - ./config/php/docker-php.ini:/usr/local/etc/php/conf.d/docker-php.ini
     ports:
+      - 80:80
       - 1085:80
       - 8080:8080
-      - 9044:9044
-      - 80:80
-      - 8000:8000
-      - 3000:3000
-      - 8082:8000
-      - 2001:2001
-      - 2002:2002
       - 5173:5173
-      - 7777:7777
     networks:
       - dev
     extra_hosts:
